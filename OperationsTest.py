@@ -6,6 +6,7 @@ def test_add():
 
 def test_prod():
     assert product(1, 2) == 2, "Should be 2"
+    assert product(14, 2) == 28, "Should be 28"
 
 def test_sub():
     assert subs(1, 2) == 0, "Should be 0"
