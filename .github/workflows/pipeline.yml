@@ -49,24 +49,35 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: dev
+      #  git config --global user.email "mergeBot@github.com"
+      #  git config --global user.name "MergeBot"
+      #  git fetch --unshallow || true         
+      #  git checkout main
+      #  git reset --hard
+      #  git clean -fd
+      #  git pull --rebase origin main
+      #  git merge --ff origin/dev
+      #  git push origin main
       - name: Set up Git
         run: |
           git config --global user.email "mergeBot@github.com"
           git config --global user.name "MergeBot"
-      - name: Create temporary branch and push it
-        run: |
-          TEMP_BRANCH="merge-dev-into-main-$(date +%s)"
-          git fetch origin
-          git checkout -b $TEMP_BRANCH origin/dev
-          git push origin $TEMP_BRANCH
-      - name: Create Pull Request
+      # - name: Create temporary branch and push it
+      #   run: |
+      #     TEMP_BRANCH="merge-dev-into-main-$(date +%s)"
+      #     git fetch origin
+      #     git checkout -b $TEMP_BRANCH origin/dev
+      #     git push origin $TEMP_BRANCH
+      - name: Create Pull Request to merge dev into main
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${{ steps.create_branch.outputs.branch }}
+          branch: merge-dev-into-main  # nombre de la rama temporal
           title: "Merge dev into main"
-          body: "Automated PR to merge changes from dev into main after successful CI"
-          draft: false
+          body: "Este PR fue generado automáticamente por GitHub Actions después de pasar los tests."
+          delete-branch: true
 
       
