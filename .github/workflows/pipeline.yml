@@ -3,8 +3,8 @@ name: CI
 on:  
   push:
     branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+  # pull_request:
+  #   branches: [ "dev" ]
 
   workflow_dispatch:
 
@@ -12,6 +12,7 @@ permissions:
   # Need `contents: read` to checkout the repository
   # Need `contents: write` to merge branches
     contents: write
+    pull-requests: write
 
 jobs:
   buildplusTest:
@@ -49,16 +50,41 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     steps:
       - uses: actions/checkout@v4
-      - name: Merge Dev to Main branch
+        with:
+          fetch-depth: 0  # Necesario para hacer merge entre ramas
+      #  git config --global user.email "mergeBot@github.com"
+      #  git config --global user.name "MergeBot"
+      #  git fetch --unshallow || true         
+      #  git checkout main
+      #  git reset --hard
+      #  git clean -fd
+      #  git pull --rebase origin main
+      #  git merge --ff origin/dev
+      #  git push origin main
+      - name: Set up Git
         run: |
-         git config --global user.email "mergeBot@github.com"
-         git config --global user.name "MergeBot"
-         git fetch --unshallow || true         
-         git checkout main
-         git reset --hard
-         git clean -fd
-         git pull --rebase origin main
-         git merge --ff origin/dev
-         git push origin main
+          git config --global user.email "mergeBot@github.com"
+          git config --global user.name "MergeBot"
+
+      - name: Checkout and merge dev into main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge origin/dev --no-ff -m "Auto-merge dev into main"
+      # - name: Create temporary branch and push it
+      #   run: |
+      #     TEMP_BRANCH="merge-dev-into-main-$(date +%s)"
+      #     git fetch origin
+      #     git checkout -b $TEMP_BRANCH origin/dev
+      #     git push origin $TEMP_BRANCH
+      - name: Create Pull Request to merge dev into main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: merge-dev-into-main  # nombre de la rama temporal
+          title: "Merge dev into main"
+          body: "Este PR fue generado automáticamente por GitHub Actions después de pasar los tests."
+          delete-branch: true
 
       
