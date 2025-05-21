@@ -64,6 +64,12 @@ jobs:
         run: |
           git config --global user.email "mergeBot@github.com"
           git config --global user.name "MergeBot"
+
+      - name: Checkout and merge dev into main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge origin/dev --no-ff -m "Auto-merge dev into main"
       # - name: Create temporary branch and push it
       #   run: |
       #     TEMP_BRANCH="merge-dev-into-main-$(date +%s)"
