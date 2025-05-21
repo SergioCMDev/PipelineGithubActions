@@ -3,9 +3,6 @@ name: CI
 on:  
   push:
     branches: [ "dev" ]
-  # pull_request:
-  #   branches: [ "dev" ]
-
   workflow_dispatch:
 
 permissions:
@@ -65,18 +62,11 @@ jobs:
         run: |
           git config --global user.email "mergeBot@github.com"
           git config --global user.name "MergeBot"
-
       - name: Checkout and merge dev into main
         run: |
           git checkout main
           git pull origin main
           git merge origin/dev --no-ff -m "Auto-merge dev into main"
-      # - name: Create temporary branch and push it
-      #   run: |
-      #     TEMP_BRANCH="merge-dev-into-main-$(date +%s)"
-      #     git fetch origin
-      #     git checkout -b $TEMP_BRANCH origin/dev
-      #     git push origin $TEMP_BRANCH
       - name: Create Pull Request to merge dev into main
         uses: peter-evans/create-pull-request@v6
         with:
