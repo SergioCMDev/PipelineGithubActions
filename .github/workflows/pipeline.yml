@@ -50,8 +50,9 @@ jobs:
         run: |
          git config --global user.email "mergeBot@github.com"
          git config --global user.name "MergeBot"
-         git fetch --unshallow
+         git fetch --unshallow || true         
          git checkout main
-         git pull
+         git pull --rebase origin main
          git merge --ff dev
-         git push
+         git pull --rebase origin main
+         git push origin main
