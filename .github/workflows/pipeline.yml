@@ -52,6 +52,8 @@ jobs:
          git config --global user.name "MergeBot"
          git fetch --unshallow || true         
          git checkout main
+         git reset --hard
+         git clean -fd
          git pull --rebase origin main
          git merge --ff dev
          git pull --rebase origin main
