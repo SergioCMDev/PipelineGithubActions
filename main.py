@@ -1,5 +1,15 @@
-from Operations import suma
+from Operations import add, product, division, subs
 
-print(suma(1,1))
+print(add(1,1))
 
-print(suma(2,1))
+print(add(2,1))
+
+print(product(2,3))
+
+print(division(2,3))
+
+print(division(0,3))
+
+print(division(3,0))
+
+print(subs(2,3))
