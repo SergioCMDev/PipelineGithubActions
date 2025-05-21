@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: dev
+          fetch-depth: 0  # Necesario para hacer merge entre ramas
       #  git config --global user.email "mergeBot@github.com"
       #  git config --global user.name "MergeBot"
       #  git fetch --unshallow || true         
