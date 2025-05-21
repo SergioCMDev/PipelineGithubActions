@@ -2,6 +2,7 @@ from .Operations import add, product, division, subs
 
 def test_add():
     assert add(1, 2) == 3, "Should be 3"
+    assert add(1, 3) == 4, "Should be 4"
 
 def test_prod():
     assert product(1, 2) == 2, "Should be 2"
