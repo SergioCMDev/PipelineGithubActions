@@ -3,8 +3,8 @@ name: CI
 on:  
   push:
     branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+  # pull_request:
+  #   branches: [ "dev" ]
 
   workflow_dispatch:
 
@@ -12,6 +12,7 @@ permissions:
   # Need `contents: read` to checkout the repository
   # Need `contents: write` to merge branches
     contents: write
+    pull-requests: write
 
 jobs:
   buildplusTest:
